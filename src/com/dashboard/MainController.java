@@ -1,5 +1,6 @@
 package com.dashboard;
 
+import com.mqtt.MQTTMonitor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,19 @@ public class MainController {
         return "Landing page is coming...";
     }
 
-    public static void main(String[] args ) throws Exception{
+    @RequestMapping("/mqttstatus")
+    @ResponseBody
+    public String mqttStatus() {
+
+        MQTTMonitor monitor = new MQTTMonitor();
+        String status = "Dead";
+        if (monitor.getStatus()){
+            status = "Alive";
+        }
+        return "MQTT Server is " + status + "!!!";
+    }
+
+    public static void main(String[] args ) {
 
         System.out.println("Starting the app...");
         SpringApplication.run(MainController.class, args);
